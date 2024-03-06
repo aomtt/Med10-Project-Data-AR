@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 1813411270154254155}
   - component: {fileID: 3010150248861367839}
   - component: {fileID: 2465572485401433022}
-  - component: {fileID: 893102712804016049}
+  - component: {fileID: 1244659855299355964}
+  - component: {fileID: 6777134465756551157}
   m_Layer: 0
-  m_Name: Datapoint
+  m_Name: ColorCubed Datapoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7571319526968444455}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1813411270154254155
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -64,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d7d99aadf6cde4bf1839bdb7a2f04a77, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -119,8 +120,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0deb38c269a34ef090df3ca9a840b13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fixedScale: 0.01
---- !u!114 &893102712804016049
+  fixedScale: 0.1
+--- !u!114 &1244659855299355964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7571319526968444455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5adb8639082c4ae0a11c2d2eec5e018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6777134465756551157
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
