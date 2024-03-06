@@ -27,7 +27,7 @@ public class IndicatorScript2 : MonoBehaviour
     public GameObject planeIndicator;
     private bool hasEnabled = false;
     private List<ARRaycastHit> hitList =new List<ARRaycastHit>();
-
+    private float angle;
     
 
     
@@ -47,43 +47,52 @@ public class IndicatorScript2 : MonoBehaviour
     
     void Update()
     {
+        angle = Vector3.Angle(cameraObject.transform.forward, Vector3.up);
+        
+
+        
         ray = new Vector2(Screen.width/2, Screen.height/2);
-        
-        
-        if (!raycastManager.Raycast(ray, hitList, TrackableType.PlaneWithinBounds)) return;
 
-        //raycastManager.Raycast(ray, hitList, TrackableType.Planes);
-        
-        findFloorPrompt.SetActive(false);
-        
-        //find median plane rounded down
-        //Pose hitPose = hitList[^((hitList.Count/2)+1)].pose;
-        
-        //find bottom plane
-        //Pose hitPose = hitList[^1].pose;
-        
-        //find top plane
-        Pose hitPose = hitList[0].pose;
-        
-        
-        transform.position = new Vector3(hitPose.position.x, hitPose.position.y, hitPose.position.z);
 
-        Vector3 targetPos = new Vector3(cameraObject.transform.position.x, transform.position.y,
-            cameraObject.transform.position.z);
-        
-        Vector3 targetDirection = targetPos - transform.position;
-        
-        //transform1.rotation = Quaternion.LookRotation(targetDirection);
-        transform.rotation = Quaternion.Euler(transform.rotation.x, -cameraObject.transform.rotation.y*180, transform.rotation.z);
-
-        if (!hasEnabled)
+        if (raycastManager.Raycast(ray, hitList, TrackableType.PlaneWithinBounds))
         {
-            hasEnabled = true;
-            playButton.SetActive(true);
+            //raycastManager.Raycast(ray, hitList, TrackableType.Planes);
+        
+            findFloorPrompt.SetActive(false);
+        
+            //find median plane rounded down
+            //Pose hitPose = hitList[^((hitList.Count/2)+1)].pose;
+        
+            //find bottom plane
+            //Pose hitPose = hitList[^1].pose;
+        
+            //find top plane
+            Pose hitPose = hitList[0].pose;
+        
+        
+            transform.position = new Vector3(hitPose.position.x, hitPose.position.y, hitPose.position.z);
+
+            Vector3 targetPos = new Vector3(cameraObject.transform.position.x, transform.position.y,
+                cameraObject.transform.position.z);
+        
+            Vector3 targetDirection = targetPos - transform.position;
+        
+            //transform1.rotation = Quaternion.LookRotation(targetDirection);
+            transform.rotation = Quaternion.Euler(transform.rotation.x, -cameraObject.transform.rotation.y*180, transform.rotation.z);
+
+            if (!hasEnabled)
+            {
+                hasEnabled = true;
+                playButton.SetActive(true);
+            }
+
+            if (!point1.activeInHierarchy) return;
+            DrawPlane();
+        } else if (point1.activeInHierarchy) {
+            DrawPlane();
         }
 
-        if (point3.activeInHierarchy) return;
-        DrawPlane();
+        
         
     }
     
@@ -111,17 +120,18 @@ public class IndicatorScript2 : MonoBehaviour
         
         //Debug.Log("running place plane method");
         //PlacePlane();
+        point3.SetActive(true);
     }
     
     public void PlacePoint3()
     {
-        point3.SetActive(true);
+        
         //place at same height as point 1
-        float angle = Vector3.Angle(cameraObject.transform.forward, Vector3.up);
-        point3.transform.position = new Vector3(point2.transform.position.x, (angle/90), point2.transform.position.z);
+        
+        //point3.transform.position = new Vector3(point2.transform.position.x, (angle/90), point2.transform.position.z);
         //place individual height (plane will then be placed at the average between the two)
         //point2.transform.position = transform.position;
-        point3.transform.rotation = point1.transform.rotation;
+        //point3.transform.rotation = point1.transform.rotation;
         //Debug.Log("point2 pos: "+point2.transform.position);
         //Debug.Log("point2 localpos: "+point2.transform.localPosition);
         
@@ -141,35 +151,36 @@ public class IndicatorScript2 : MonoBehaviour
         //Debug.Log("-");
         //planeObject.transform.localScale = new Vector3(Mathf.Abs(point2.transform.localPosition.x / 10), 1, Mathf.Abs(point2.transform.localPosition.z / 10));
         planeObject.transform.localScale = new Vector3(Mathf.Abs(point2.transform.localPosition.x/10), Mathf.Abs(point3.transform.localPosition.y/10), Mathf.Abs(point2.transform.localPosition.z/10));
-        
+        Debug.Log(planeObject.transform.localScale);
+        gameObject.SetActive(false);
     }
     
     public void DrawPlane()
     {
+        //Debug.Log(angle);
         secondPointer.transform.position = transform.position;
         //Debug.Log("setting plane active...");
         planeIndicator.SetActive(true);
+        
+        planeIndicator.transform.rotation = point1.transform.rotation;
+        
         //Debug.Log("setting plane position...    variables: "+secondPointer.transform.localPosition+"  and: "+secondPointer.transform.localPosition/2);
         planeIndicator.transform.localPosition = secondPointer.transform.localPosition/2;
         //Debug.Log("setting rotation.,.");
-        planeIndicator.transform.rotation = point1.transform.rotation;
-        //Debug.Log("-");
-        planeIndicator.transform.localScale = new Vector3(Mathf.Abs(secondPointer.transform.localPosition.x / 10), 1, Mathf.Abs(secondPointer.transform.localPosition.z / 10));
+        if (point3.activeInHierarchy)
+        {
+            
+            //float angle = Vector3.Angle(cameraObject.transform.forward, Vector3.up);
+            point3.transform.localPosition = new Vector3(point2.transform.position.x, 3+(90-angle)/30, point2.transform.position.z);
+            Debug.Log("point3 height: "+point3.transform.localPosition.y+"    angle value: "+(90-angle)/90+"cam height value: "+cameraObject.transform.position.y);
+            planeIndicator.transform.localPosition = new Vector3(point2.transform.localPosition.x/2, point3.transform.localPosition.y/2, point2.transform.localPosition.z/2);
+            planeIndicator.transform.localScale = new Vector3(Mathf.Abs(point2.transform.localPosition.x), Mathf.Abs(point3.transform.localPosition.y), Mathf.Abs(point2.transform.localPosition.z));
+        }
+        else
+        {
+            planeIndicator.transform.localScale = new Vector3(Mathf.Abs(secondPointer.transform.localPosition.x), 0.1f, Mathf.Abs(secondPointer.transform.localPosition.z));
+        }
+        
     }
     
-    public void DrawBox()
-    {
-        secondPointer.transform.position = transform.position;
-        //Debug.Log("setting plane active...");
-        planeIndicator.SetActive(true);
-        //Debug.Log("setting plane position...    variables: "+secondPointer.transform.localPosition+"  and: "+secondPointer.transform.localPosition/2);
-        planeIndicator.transform.localPosition = secondPointer.transform.localPosition/2;
-        //Debug.Log("setting rotation.,.");
-        planeIndicator.transform.rotation = point1.transform.rotation;
-        //Debug.Log("-");
-        //planeIndicator.transform.localScale = new Vector3(Mathf.Abs(secondPointer.transform.localPosition.x / 10), 1, Mathf.Abs(secondPointer.transform.localPosition.z / 10));
-        float angle = Vector3.Angle(cameraObject.transform.forward, Vector3.up);
-        Debug.Log(angle);
-        planeIndicator.transform.localScale = new Vector3(Mathf.Abs(secondPointer.transform.localPosition.x), (angle/180), Mathf.Abs(secondPointer.transform.localPosition.z));
-    }
 }
