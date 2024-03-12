@@ -21,4 +21,9 @@ public class SceneManagerScript : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+    public void QuitApplication()
+    {
+        Application.Quit();
+    }
 }

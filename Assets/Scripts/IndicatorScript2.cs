@@ -34,6 +34,8 @@ public class IndicatorScript2 : MonoBehaviour
     private Vector2 ray;
     void Start()
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        
         if(cameraObject == null) cameraObject = GameObject.Find("Main Camera");
         if(playButton == null) playButton = GameObject.Find("StartAreaButton");
         if(findFloorPrompt == null) findFloorPrompt = GameObject.Find("FindFloorPrompt");
@@ -170,9 +172,9 @@ public class IndicatorScript2 : MonoBehaviour
         if (point3.activeInHierarchy)
         {
             
-            //float angle = Vector3.Angle(cameraObject.transform.forward, Vector3.up);
-            point3.transform.localPosition = new Vector3(point2.transform.position.x, 3+(90-angle)/30, point2.transform.position.z);
-            Debug.Log("point3 height: "+point3.transform.localPosition.y+"    angle value: "+(90-angle)/90+"cam height value: "+cameraObject.transform.position.y);
+            //float angle = Vector3.Angle(cameraObject.transform.forward, Vector3.up);     "Mathf.Max(3, (180-angle)/10-5)"            
+            point3.transform.localPosition = new Vector3(point2.transform.position.x, Mathf.Max(3, (10*(cameraObject.transform.position.y-point2.transform.position.y))+(105-angle)/5), point2.transform.position.z);
+            //Debug.Log("point3 height: "+point3.transform.localPosition.y+"    angle value: "+(90-angle)/90+"cam height value: "+cameraObject.transform.position.y);
             planeIndicator.transform.localPosition = new Vector3(point2.transform.localPosition.x/2, point3.transform.localPosition.y/2, point2.transform.localPosition.z/2);
             planeIndicator.transform.localScale = new Vector3(Mathf.Abs(point2.transform.localPosition.x), Mathf.Abs(point3.transform.localPosition.y), Mathf.Abs(point2.transform.localPosition.z));
         }

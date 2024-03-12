@@ -54,7 +54,7 @@ MeshRenderer:
   m_GameObject: {fileID: 7571319526968444455}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0deb38c269a34ef090df3ca9a840b13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fixedScale: 0.1
+  fixedScale: 0.075
 --- !u!114 &1244659855299355964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5adb8639082c4ae0a11c2d2eec5e018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transparency: 0.5
 --- !u!114 &6777134465756551157
 MonoBehaviour:
   m_ObjectHideFlags: 0

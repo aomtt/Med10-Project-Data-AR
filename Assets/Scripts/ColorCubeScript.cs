@@ -5,7 +5,7 @@ using UnityEngine;
 public class ColorCubeScript : MonoBehaviour
 {
     private Material material;
-
+    [SerializeField] private float transparency = 0.5f;
     private void OnEnable()
     {
         // Get the material from the renderer
@@ -18,7 +18,7 @@ public class ColorCubeScript : MonoBehaviour
             Vector3 worldPosition = transform.localPosition;
 
             // Convert world position to color
-            Color color = new Color(worldPosition.x, worldPosition.y, worldPosition.z, 0.75f);
+            Color color = new Color(worldPosition.x, worldPosition.y, worldPosition.z, transparency);
 
             // Apply color to material
             material.color = color;
