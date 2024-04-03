@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
@@ -23,8 +24,8 @@ public class IndicatorScript2 : MonoBehaviour
     [SerializeField, Tooltip("The third point object of the rectangle")]
     public GameObject point3;
     public GameObject secondPointer;
-    public GameObject planeObject;
-    public GameObject planeIndicator;
+    [FormerlySerializedAs("CubeObject")] [FormerlySerializedAs("planeObject")] public GameObject cubeObject;
+    [FormerlySerializedAs("planeIndicator")] public GameObject cubeIndicator;
     private bool hasEnabled = false;
     private List<ARRaycastHit> hitList =new List<ARRaycastHit>();
     private float angle;
@@ -50,52 +51,29 @@ public class IndicatorScript2 : MonoBehaviour
     void Update()
     {
         angle = Vector3.Angle(cameraObject.transform.forward, Vector3.up);
-        
-
-        
         ray = new Vector2(Screen.width/2, Screen.height/2);
-
-
+        
         if (raycastManager.Raycast(ray, hitList, TrackableType.PlaneWithinBounds))
         {
-            //raycastManager.Raycast(ray, hitList, TrackableType.Planes);
-        
             findFloorPrompt.SetActive(false);
-        
-            //find median plane rounded down
+                //find median plane rounded down
             //Pose hitPose = hitList[^((hitList.Count/2)+1)].pose;
-        
-            //find bottom plane
+                //find bottom plane
             //Pose hitPose = hitList[^1].pose;
-        
-            //find top plane
+                //find top plane
             Pose hitPose = hitList[0].pose;
-        
-        
             transform.position = new Vector3(hitPose.position.x, hitPose.position.y, hitPose.position.z);
-
             Vector3 targetPos = new Vector3(cameraObject.transform.position.x, transform.position.y,
                 cameraObject.transform.position.z);
-        
             Vector3 targetDirection = targetPos - transform.position;
-        
-            //transform1.rotation = Quaternion.LookRotation(targetDirection);
             transform.rotation = Quaternion.Euler(transform.rotation.x, -cameraObject.transform.rotation.y*180, transform.rotation.z);
 
-            if (!hasEnabled)
-            {
-                hasEnabled = true;
-                playButton.SetActive(true);
-            }
-
+            if (!hasEnabled) { hasEnabled = true; playButton.SetActive(true); }
             if (!point1.activeInHierarchy) return;
-            DrawPlane();
+            DrawCube();
         } else if (point1.activeInHierarchy) {
-            DrawPlane();
+            DrawCube();
         }
-
-        
-        
     }
     
     
@@ -138,36 +116,33 @@ public class IndicatorScript2 : MonoBehaviour
         //Debug.Log("point2 localpos: "+point2.transform.localPosition);
         
         //Debug.Log("running place plane method");
-        PlacePlane();
+        PlaceCube();
     }
     
-    public void PlacePlane()
+    public void PlaceCube()
     {
-        //Debug.Log("setting plane active...");
-        planeObject.SetActive(true);
-        planeIndicator.SetActive(false);
-        //Debug.Log("setting plane position...    variables: "+point2.transform.localPosition+"  and: "+point2.transform.localPosition/2);
-        planeObject.transform.localPosition = new Vector3(point2.transform.localPosition.x/2, 0, point2.transform.localPosition.z/2);
-        //Debug.Log("setting rotation.,.");
-        planeObject.transform.rotation = point1.transform.rotation;
-        //Debug.Log("-");
-        //planeObject.transform.localScale = new Vector3(Mathf.Abs(point2.transform.localPosition.x / 10), 1, Mathf.Abs(point2.transform.localPosition.z / 10));
-        planeObject.transform.localScale = new Vector3(Mathf.Abs(point2.transform.localPosition.x/10), Mathf.Abs(point3.transform.localPosition.y/10), Mathf.Abs(point2.transform.localPosition.z/10));
-        Debug.Log(planeObject.transform.localScale);
+        //enables the plot object and disables the indicator object
+        cubeObject.SetActive(true);
+        cubeIndicator.SetActive(false);
+        //set the correct position, rotation, and scale for the plot
+        cubeObject.transform.localPosition = new Vector3(point2.transform.localPosition.x/2, 0, point2.transform.localPosition.z/2);
+        cubeObject.transform.rotation = point1.transform.rotation;
+        cubeObject.transform.localScale = new Vector3(Mathf.Abs(point2.transform.localPosition.x/10), Mathf.Abs(point3.transform.localPosition.y/10), Mathf.Abs(point2.transform.localPosition.z/10));
+        //disables the indicator(itself)
         gameObject.SetActive(false);
     }
     
-    public void DrawPlane()
+    public void DrawCube()
     {
         //Debug.Log(angle);
         secondPointer.transform.position = transform.position;
         //Debug.Log("setting plane active...");
-        planeIndicator.SetActive(true);
+        cubeIndicator.SetActive(true);
         
-        planeIndicator.transform.rotation = point1.transform.rotation;
+        cubeIndicator.transform.rotation = point1.transform.rotation;
         
         //Debug.Log("setting plane position...    variables: "+secondPointer.transform.localPosition+"  and: "+secondPointer.transform.localPosition/2);
-        planeIndicator.transform.localPosition = secondPointer.transform.localPosition/2;
+        cubeIndicator.transform.localPosition = secondPointer.transform.localPosition/2;
         //Debug.Log("setting rotation.,.");
         if (point3.activeInHierarchy)
         {
@@ -175,12 +150,12 @@ public class IndicatorScript2 : MonoBehaviour
             //float angle = Vector3.Angle(cameraObject.transform.forward, Vector3.up);     "Mathf.Max(3, (180-angle)/10-5)"            
             point3.transform.localPosition = new Vector3(point2.transform.position.x, Mathf.Max(3, (10*(cameraObject.transform.position.y-point2.transform.position.y))+(105-angle)/5), point2.transform.position.z);
             //Debug.Log("point3 height: "+point3.transform.localPosition.y+"    angle value: "+(90-angle)/90+"cam height value: "+cameraObject.transform.position.y);
-            planeIndicator.transform.localPosition = new Vector3(point2.transform.localPosition.x/2, point3.transform.localPosition.y/2, point2.transform.localPosition.z/2);
-            planeIndicator.transform.localScale = new Vector3(Mathf.Abs(point2.transform.localPosition.x), Mathf.Abs(point3.transform.localPosition.y), Mathf.Abs(point2.transform.localPosition.z));
+            cubeIndicator.transform.localPosition = new Vector3(point2.transform.localPosition.x/2, point3.transform.localPosition.y/2, point2.transform.localPosition.z/2);
+            cubeIndicator.transform.localScale = new Vector3(Mathf.Abs(point2.transform.localPosition.x), Mathf.Abs(point3.transform.localPosition.y), Mathf.Abs(point2.transform.localPosition.z));
         }
         else
         {
-            planeIndicator.transform.localScale = new Vector3(Mathf.Abs(secondPointer.transform.localPosition.x), 0.1f, Mathf.Abs(secondPointer.transform.localPosition.z));
+            cubeIndicator.transform.localScale = new Vector3(Mathf.Abs(secondPointer.transform.localPosition.x), 0.1f, Mathf.Abs(secondPointer.transform.localPosition.z));
         }
         
     }
