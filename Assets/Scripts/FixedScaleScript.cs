@@ -5,13 +5,7 @@ using UnityEngine;
 public class FixedScaleScript : MonoBehaviour
 {
     public float fixedScale = 1.0f;
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        Rescale(transform, Vector3.one*fixedScale);
-    }
+    
     
     void Rescale(Transform obj, Vector3 newScale)
     {
@@ -21,6 +15,30 @@ public class FixedScaleScript : MonoBehaviour
             obj.SetParent(null);
             obj.localScale = newScale;
             obj.SetParent(parent, true);
+        }
+    }
+    
+    public void Rescale()
+    {
+        if(transform.root != transform)
+        {
+            Transform parent = transform.parent;
+            Transform transform1;
+            (transform1 = transform).SetParent(null);
+            transform1.localScale = Vector3.one*fixedScale;
+            transform.SetParent(parent, true);
+        }
+    }
+    
+    public void Rescale(float scale)
+    {
+        if(transform.root != transform)
+        {
+            Transform parent = transform.parent;
+            Transform transform1;
+            (transform1 = transform).SetParent(null);
+            transform1.localScale = Vector3.one*scale;
+            transform.SetParent(parent, true);
         }
     }
 }

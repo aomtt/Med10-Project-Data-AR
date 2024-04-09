@@ -39,7 +39,7 @@ public class TapInteractionScript : MonoBehaviour
         //Debug.DrawRay(ray.origin, ray.direction, Color.green);
         
         //if (Physics.Raycast (ray.origin, ray.direction) && hit.transform.tag == "Dynamic")
-        if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit) && hit.transform.CompareTag("DataPoint")) {
+        if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit) && hit.transform.CompareTag("DataPoint")){
             highlightedObject = hit.transform.gameObject;
             HighlightObject();
             //Debug.Log("hit!");

@@ -38,6 +38,8 @@ public class Data : MonoBehaviour
     public int runOnce = 0;
     public DataTable iris_dt;
     public DataTable redwine_dt;
+
+    [SerializeField] private GameObject dataPointPrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +51,7 @@ public class Data : MonoBehaviour
 
     void Update()
     {
+        /*
         if (runOnce == 0)
         {
             foreach (DataRow row in redwine_dt.Rows)
@@ -69,6 +72,7 @@ public class Data : MonoBehaviour
                 Debug.Log(row["SepalLengthCm_normalized"].ToString());
             }
         }
+        */
     }
 
     void LoadIrisDataset()
@@ -164,7 +168,61 @@ public class Data : MonoBehaviour
             float value = Convert.ToSingle(row[columnName]);
             float normalizedValue = (value - minValue) / (maxValue - minValue);
             row[newColumnName] = normalizedValue;
-            Debug.Log(row[newColumnName]);
+            //Debug.Log(row[newColumnName]);
+        }
+    }
+
+    public void InstantiateWineData1()
+    {
+        DestroyAllPrefabs();
+        
+        if (redwine_dt == null) return;
+        foreach (DataRow row in redwine_dt.Rows)
+        {
+            GameObject prefab = Instantiate(dataPointPrefab, gameObject.transform);
+            prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["pH_normalized"]), Convert.ToSingle(row["alcohol_normalized"]), Convert.ToSingle(row["density_normalized"]));
+            prefab.GetComponent<Renderer>().material.color = new Color(1-Convert.ToSingle(row["quality_normalized"]),Convert.ToSingle(row["quality_normalized"]),0.0f);
+            prefab.GetComponent<DataPointScript>().dataDescriptionText = $"pH: {row["pH"]}\nDensity: {row["density"]}\nAlcohol: {row["alcohol"]}\nQuality: {row["quality"]}";
+            prefab.GetComponent<FixedScaleScript>().Rescale(0.02f);
+        }
+    }
+    
+    public void InstantiateIrisData1()
+    {
+        DestroyAllPrefabs();
+        
+        if (iris_dt == null) return;
+        foreach (DataRow row in iris_dt.Rows)
+        {
+            GameObject prefab = Instantiate(dataPointPrefab, gameObject.transform);
+            prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["SepalLengthCm_normalized"]), Convert.ToSingle(row["PetalLengthCm_normalized"]), Convert.ToSingle(row["PetalWidthCm_normalized"]));
+            //prefab.GetComponent<Renderer>().material.color = new Color(1-Convert.ToSingle(row["quality_normalized"]),Convert.ToSingle(row["quality_normalized"]),0.0f);
+            prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Sepal Length(cm): {row["SepalLengthCm"]}\nSepal Width(cm): {row["SepalWidthCm"]}\nPetal Length(cm): {row["PetalLengthCm"]}\nPetal Width(cm): {row["PetalWidthCm"]}\nSpecies: {row["Species"]}";
+            switch (row["Species"].ToString())
+            {
+                case "Iris-versicolor":
+                    prefab.GetComponent<Renderer>().material.color = new Color(1,0,0);
+                    break;
+                case "Iris-setosa":
+                    prefab.GetComponent<Renderer>().material.color = new Color(0,1,0);
+                    break;
+                case "Iris-virginica":
+                    prefab.GetComponent<Renderer>().material.color = new Color(0,0,1);
+                    break;
+                default:
+                    prefab.GetComponent<Renderer>().material.color = new Color(1,1,1);
+                    break;
+            }
+
+            prefab.GetComponent<FixedScaleScript>().Rescale(0.01f);
+        }
+    }
+
+    public void DestroyAllPrefabs()
+    {
+        var prefabList = GameObject.FindGameObjectsWithTag("DataPoint");
+        foreach (var datapoint in prefabList){
+            Destroy(datapoint);
         }
     }
 }
