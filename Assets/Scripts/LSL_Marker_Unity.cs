@@ -16,10 +16,9 @@ public class Data : MonoBehaviour
     public int k = 0;
     void Start()
     {
-            // create stream info and outlet
+        // create stream info and outlet
         inf = new StreamInfo("Test2", "Markers", 1, 0, channel_format_t.cf_string, "giu4569");
         outl = new StreamOutlet(inf);
-
     }
 
     void Update()
@@ -36,5 +35,13 @@ public class Data : MonoBehaviour
         }
     }
 
-
+    void OnApplicationQuit()
+    {
+        Debug.Log("Closing outlet stream....");
+        outl.Close();
+        if(outl.IsClosed == true) {
+            Debug.Log("Successfully Closed!");
+        }
+        Debug.Log("Application ending after " + Time.time + " seconds");
+    }
 }
