@@ -89,7 +89,7 @@ public class Data : MonoBehaviour
 
     void LoadIrisDataset()
     {
-        using (var reader = new StreamReader(Application.dataPath + "/Datasets/Iris.csv"))
+        using (var reader = new StreamReader(Path.Combine(Application.streamingAssetsPath, "Iris.csv")))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
             // Do any configuration to `CsvReader` before creating CsvDataReader.
@@ -111,11 +111,17 @@ public class Data : MonoBehaviour
                 NormalizeColumn(iris_dt, "PetalWidthCm");
             }
         }
+        foreach (DataColumn column in iris_dt.Columns){
+            foreach (DataRow row in iris_dt.Rows){
+                Debug.Log("column: "+column+"    row: "+row[column.ToString()]);
+            }  
+        }  
+        Debug.Log(iris_dt);
     }
 
     void LoadWineQualityDataset()
     {
-        using (var reader = new StreamReader(Application.dataPath + "/Datasets/winequality-red.csv"))
+        using (var reader = new StreamReader(Path.Combine(Application.streamingAssetsPath, "winequality-red.csv")))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
             // Do any configuration to `CsvReader` before creating CsvDataReader.
@@ -151,6 +157,7 @@ public class Data : MonoBehaviour
                 NormalizeColumn(redwine_dt, "quality");
             }
         }
+        //Debug.Log(redwine_dt);
     }
 
     void NormalizeColumn(DataTable dtz, string columnName)
