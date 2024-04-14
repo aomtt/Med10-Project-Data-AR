@@ -353,7 +353,7 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: -100, z: 0}
+  - {x: 0, y: -500, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -481,7 +481,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ba4669405783c184ea1c9d8185a60e78, type: 2}
+  - {fileID: 2100000, guid: 2a800a5c0082a1f49b7f67efe462f603, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -535,7 +535,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7571319526968444455}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d565d1c0e3b9f024892c5c40a50e4328, type: 3}
   m_Name: 
@@ -543,6 +543,7 @@ MonoBehaviour:
   camera: {fileID: 0}
   max: 0.3
   min: 0.15
+  lineRenderer: {fileID: 1659464633779864037}
   hitbox: {fileID: 346569010212165000}
 --- !u!114 &5466529960531239601
 MonoBehaviour:
@@ -558,6 +559,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textLabel: {fileID: 5807437544543141924}
   dataDescriptionText: This is the Data Description
+  lineObject: {fileID: 7389697053431968014}
+  lineRenderer: {fileID: 1659464633779864037}
+  renderer: {fileID: 1813411270154254155}
+  meshFilter: {fileID: 7241228505756872611}
+  meshArray:
+  - {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!135 &346569010212165000
 SphereCollider:
   m_ObjectHideFlags: 0

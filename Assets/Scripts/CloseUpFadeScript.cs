@@ -11,6 +11,8 @@ public class CloseUpFadeScript : MonoBehaviour
     private float max = 0.15f;
     [SerializeField]
     private float min = 0.05f;
+    [SerializeField]
+    private LineRenderer lineRenderer;
     private Renderer renderer;
     private Color mainColor;
     private float dist;
@@ -43,6 +45,6 @@ public class CloseUpFadeScript : MonoBehaviour
 
         
         (material = renderer.material).color = new Color(mainColor.r,mainColor.g,mainColor.b,Mathf.InverseLerp(min, max, dist));
-        hitbox.enabled = material.color.a >= 0.25f;
+        hitbox.enabled = lineRenderer.enabled = material.color.a >= 0.25f;
     }
 }
