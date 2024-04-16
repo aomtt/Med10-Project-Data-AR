@@ -111,12 +111,8 @@ public class Data : MonoBehaviour
                 NormalizeColumn(iris_dt, "PetalWidthCm");
             }
         }
-        foreach (DataColumn column in iris_dt.Columns){
-            foreach (DataRow row in iris_dt.Rows){
-                Debug.Log("column: "+column+"    row: "+row[column.ToString()]);
-            }  
-        }  
-        Debug.Log(iris_dt);
+ 
+        Debug.Log("iris data loaded");
     }
 
     void LoadWineQualityDataset()
@@ -157,7 +153,7 @@ public class Data : MonoBehaviour
                 NormalizeColumn(redwine_dt, "quality");
             }
         }
-        //Debug.Log(redwine_dt);
+        Debug.Log("wine data loaded");
     }
 
     void NormalizeColumn(DataTable dtz, string columnName)
@@ -207,13 +203,13 @@ public class Data : MonoBehaviour
             switch (row["Species"].ToString())
             {
                 case "Iris-versicolor":
-                    prefab.GetComponent<Renderer>().material.color = new Color(1,0,0);
+                    prefab.GetComponent<Renderer>().material.color = new Color(1,1,0);
                     break;
                 case "Iris-setosa":
-                    prefab.GetComponent<Renderer>().material.color = new Color(0,1,0);
+                    prefab.GetComponent<Renderer>().material.color = new Color(0,1,1);
                     break;
                 case "Iris-virginica":
-                    prefab.GetComponent<Renderer>().material.color = new Color(0,0,1);
+                    prefab.GetComponent<Renderer>().material.color = new Color(1,0,1);
                     break;
                 default:
                     prefab.GetComponent<Renderer>().material.color = new Color(1,1,1);
@@ -243,13 +239,13 @@ public class Data : MonoBehaviour
             switch (row["Species"].ToString())
             {
                 case "Iris-versicolor":
-                    prefab.GetComponent<Renderer>().material.color = new Color(1,0,0);
+                    prefab.GetComponent<Renderer>().material.color = new Color(1,1,0);
                     break;
                 case "Iris-setosa":
-                    prefab.GetComponent<Renderer>().material.color = new Color(0,1,0);
+                    prefab.GetComponent<Renderer>().material.color = new Color(0,1,1);
                     break;
                 case "Iris-virginica":
-                    prefab.GetComponent<Renderer>().material.color = new Color(0,0,1);
+                    prefab.GetComponent<Renderer>().material.color = new Color(1,0,1);
                     break;
                 default:
                     prefab.GetComponent<Renderer>().material.color = new Color(1,1,1);
@@ -279,13 +275,13 @@ public class Data : MonoBehaviour
             switch (row["Species"].ToString())
             {
                 case "Iris-versicolor":
-                    prefab.GetComponent<Renderer>().material.color = new Color(1,0,0);
+                    prefab.GetComponent<Renderer>().material.color = new Color(1,1,0);
                     break;
                 case "Iris-setosa":
-                    prefab.GetComponent<Renderer>().material.color = new Color(0,1,0);
+                    prefab.GetComponent<Renderer>().material.color = new Color(0,1,1);
                     break;
                 case "Iris-virginica":
-                    prefab.GetComponent<Renderer>().material.color = new Color(0,0,1);
+                    prefab.GetComponent<Renderer>().material.color = new Color(1,0,1);
                     break;
                 default:
                     prefab.GetComponent<Renderer>().material.color = new Color(1,1,1);
@@ -302,19 +298,19 @@ public class Data : MonoBehaviour
     public void InstantiateWineData1()
     {
         DestroyAllPrefabs();
-        EnableHelper(1);
+        EnableHelper(2);
         if (redwine_dt == null) return;
         foreach (DataRow row in redwine_dt.Rows)
         {
             GameObject prefab = Instantiate(dataPointPrefab, gameObject.transform);
-            prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["alcohol_normalized"]), Convert.ToSingle(row["sulphates_normalized"]), Convert.ToSingle(row["pH_normalized"]));
-            prefab.GetComponent<Renderer>().material.color = new Color(1-Convert.ToSingle(row["quality_normalized"]),Convert.ToSingle(row["quality_normalized"]),0.0f);
+            prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["pH_normalized"]), Convert.ToSingle(row["quality_normalized"]), Convert.ToSingle(row["sulphates_normalized"]));
+            prefab.GetComponent<Renderer>().material.color = new Color(0.5f,0.05f,0.25f);
             prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Residual Sugar: {row["residual sugar"]}\nSulphates: {row["sulphates"]}\nPH: {row["pH"]}\nDensity: {row["density"]}\nAlcohol: {row["alcohol"]}\nQuality: {row["quality"]}";
             prefab.GetComponent<FixedScaleScript>().Rescale(0.01f);
         }
-        AssignLabelText(xMin, xMax, redwine_dt, "alcohol");
-        AssignLabelText(yMin, yMax, redwine_dt, "sulphates");
-        AssignLabelText(zMin, zMax, redwine_dt, "pH");
+        AssignLabelText(xMin, xMax, redwine_dt, "pH");
+        AssignLabelText(yMin, yMax, redwine_dt, "quality");
+        AssignLabelText(zMin, zMax, redwine_dt, "sulphates");
     }
     
     public void InstantiateWineData2()
