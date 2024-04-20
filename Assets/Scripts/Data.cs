@@ -40,12 +40,16 @@ public class Data : MonoBehaviour
     [SerializeField] private TMP_Dropdown meshdropdown;
     [SerializeField] private GameObject[] dataHelperLabels;
     
-    [SerializeField] private TMP_Text xMax;
-    [SerializeField] private TMP_Text yMax;
-    [SerializeField] private TMP_Text zMax;
-    [SerializeField] private TMP_Text xMin;
-    [SerializeField] private TMP_Text yMin;
-    [SerializeField] private TMP_Text zMin;
+    [SerializeField] private TMP_Text[] xMax;
+    [SerializeField] private TMP_Text[] yMax;
+    [SerializeField] private TMP_Text[] zMax;
+    [SerializeField] private TMP_Text[] xMin;
+    [SerializeField] private TMP_Text[] yMin;
+    [SerializeField] private TMP_Text[] zMin;
+    [SerializeField] private TMP_Text[] xName;
+    [SerializeField] private TMP_Text[] yName;
+    [SerializeField] private TMP_Text[] zName;
+    
 
     public int runOnce = 0;
     public DataTable iris_dt;
@@ -218,11 +222,16 @@ public class Data : MonoBehaviour
 
             prefab.GetComponent<FixedScaleScript>().Rescale(0.02f);
         }
-        AssignLabelText(xMin, xMax, iris_dt, "PetalLengthCm");
-        AssignLabelText(yMin, yMax, iris_dt, "PetalWidthCm");
-        AssignLabelText(zMin, zMax, iris_dt, "SepalLengthCm");
+        AssignLabelText(xMin[0], xMax[0], iris_dt, "PetalLengthCm", xName[0]);
+        AssignLabelText(xMin[1], xMax[1], iris_dt, "PetalLengthCm", xName[1]);
+        AssignLabelText(yMin[0], yMax[0], iris_dt, "PetalWidthCm", yName[0]);
+        AssignLabelText(yMin[1], yMax[1], iris_dt, "PetalWidthCm", yName[1]);
+        AssignLabelText(yMin[2], yMax[2], iris_dt, "PetalWidthCm", yName[2]);
+        AssignLabelText(yMin[3], yMax[3], iris_dt, "PetalWidthCm", yName[3]);
+        AssignLabelText(zMin[0], zMax[0], iris_dt, "SepalLengthCm", zName[0]);
+        AssignLabelText(zMin[1], zMax[1], iris_dt, "SepalLengthCm", zName[1]);
     }
-    
+    /*
     public void InstantiateIrisData2()
     {
         DestroyAllPrefabs();
@@ -254,9 +263,9 @@ public class Data : MonoBehaviour
 
             prefab.GetComponent<FixedScaleScript>().Rescale(0.02f);
         }
-        AssignLabelText(xMin, xMax, iris_dt, "SepalWidthCm");
-        AssignLabelText(yMin, yMax, iris_dt, "SepalLengthCm");
-        AssignLabelText(zMin, zMax, iris_dt, "PetalWidthCm");
+        AssignLabelText(xMin, xMax, iris_dt, "SepalWidthCm", xName);
+        AssignLabelText(yMin, yMax, iris_dt, "SepalLengthCm", yName);
+        AssignLabelText(zMin, zMax, iris_dt, "PetalWidthCm", zName);
     }
     
     public void InstantiateIrisData3()
@@ -290,11 +299,11 @@ public class Data : MonoBehaviour
 
             prefab.GetComponent<FixedScaleScript>().Rescale(0.02f);
         }
-        AssignLabelText(xMin, xMax, iris_dt, "SepalLengthCm");
-        AssignLabelText(yMin, yMax, iris_dt, "PetalLengthCm");
-        AssignLabelText(zMin, zMax, iris_dt, "PetalWidthCm");
+        AssignLabelText(xMin[0], xMax[0], iris_dt, "SepalLengthCm", xName);
+        AssignLabelText(yMin[0], yMax[0], iris_dt, "PetalLengthCm", yName);
+        AssignLabelText(zMin[0], zMax[0], iris_dt, "PetalWidthCm", zName);
     }
-    
+    */
     public void InstantiateWineData1()
     {
         DestroyAllPrefabs();
@@ -308,11 +317,11 @@ public class Data : MonoBehaviour
             prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Residual Sugar: {row["residual sugar"]}\nSulphates: {row["sulphates"]}\nPH: {row["pH"]}\nDensity: {row["density"]}\nAlcohol: {row["alcohol"]}\nQuality: {row["quality"]}";
             prefab.GetComponent<FixedScaleScript>().Rescale(0.01f);
         }
-        AssignLabelText(xMin, xMax, redwine_dt, "pH");
-        AssignLabelText(yMin, yMax, redwine_dt, "quality");
-        AssignLabelText(zMin, zMax, redwine_dt, "sulphates");
+        AssignLabelText(xMin[0], xMax[0], redwine_dt, "pH", xName[0]);
+        AssignLabelText(yMin[0], yMax[0], redwine_dt, "quality", yName[0]);
+        AssignLabelText(zMin[0], zMax[0], redwine_dt, "sulphates", zName[0]);
     }
-    
+    /*
     public void InstantiateWineData2()
     {
         DestroyAllPrefabs();
@@ -326,11 +335,11 @@ public class Data : MonoBehaviour
             prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Residual Sugar: {row["residual sugar"]}\nSulphates: {row["sulphates"]}\nPH: {row["pH"]}\nDensity: {row["density"]}\nAlcohol: {row["alcohol"]}\nQuality: {row["quality"]}";
             prefab.GetComponent<FixedScaleScript>().Rescale(0.01f);
         }
-        AssignLabelText(xMin, xMax, redwine_dt, "residual sugar");
-        AssignLabelText(yMin, yMax, redwine_dt, "sulphates");
-        AssignLabelText(zMin, zMax, redwine_dt, "alcohol");
+        AssignLabelText(xMin, xMax, redwine_dt, "residual sugar", xName);
+        AssignLabelText(yMin, yMax, redwine_dt, "sulphates", yName);
+        AssignLabelText(zMin, zMax, redwine_dt, "alcohol", zName);
     }
-    
+    */
     
 
     public void DestroyAllPrefabs()
@@ -396,7 +405,7 @@ public class Data : MonoBehaviour
         dataHelperLabels[index].SetActive(true);
     }
 
-    private void AssignLabelText(TMP_Text minLabel, TMP_Text maxLabel,DataTable dataTable, string columnName)
+    private void AssignLabelText(TMP_Text minLabel, TMP_Text maxLabel,DataTable dataTable, string columnName, TMP_Text nameLabel)
     {
         float minValue = float.MaxValue;
         float maxValue = float.MinValue;
@@ -408,7 +417,8 @@ public class Data : MonoBehaviour
             if (value > maxValue) maxValue = value;
         }
 
-        minLabel.text = columnName+": "+minValue;
-        maxLabel.text = columnName+": "+maxValue;
+        minLabel.text = minValue+"";
+        maxLabel.text = maxValue+"";
+        nameLabel.text = columnName;
     }
 }
