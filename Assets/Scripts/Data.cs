@@ -313,15 +313,20 @@ public class Data : MonoBehaviour
         {
             GameObject prefab = Instantiate(dataPointPrefab, gameObject.transform);
             prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["pH_normalized"]), Convert.ToSingle(row["quality_normalized"]), Convert.ToSingle(row["sulphates_normalized"]));
-            prefab.GetComponent<Renderer>().material.color = new Color(0.5f,0.05f,0.25f);
+            prefab.GetComponent<Renderer>().material.color = new Color(1.0f,0.1f,0.5f);
             prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Residual Sugar: {row["residual sugar"]}\nSulphates: {row["sulphates"]}\nPH: {row["pH"]}\nDensity: {row["density"]}\nAlcohol: {row["alcohol"]}\nQuality: {row["quality"]}";
             prefab.GetComponent<FixedScaleScript>().Rescale(0.01f);
         }
         AssignLabelText(xMin[0], xMax[0], redwine_dt, "pH", xName[0]);
+        AssignLabelText(xMin[1], xMax[1], redwine_dt, "pH", xName[1]);
         AssignLabelText(yMin[0], yMax[0], redwine_dt, "quality", yName[0]);
+        AssignLabelText(yMin[1], yMax[1], redwine_dt, "quality", yName[1]);
+        AssignLabelText(yMin[2], yMax[2], redwine_dt, "quality", yName[2]);
+        AssignLabelText(yMin[3], yMax[3], redwine_dt, "quality", yName[3]);
         AssignLabelText(zMin[0], zMax[0], redwine_dt, "sulphates", zName[0]);
+        AssignLabelText(zMin[1], zMax[1], redwine_dt, "sulphates", zName[1]);
     }
-    /*
+    
     public void InstantiateWineData2()
     {
         DestroyAllPrefabs();
@@ -335,11 +340,16 @@ public class Data : MonoBehaviour
             prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Residual Sugar: {row["residual sugar"]}\nSulphates: {row["sulphates"]}\nPH: {row["pH"]}\nDensity: {row["density"]}\nAlcohol: {row["alcohol"]}\nQuality: {row["quality"]}";
             prefab.GetComponent<FixedScaleScript>().Rescale(0.01f);
         }
-        AssignLabelText(xMin, xMax, redwine_dt, "residual sugar", xName);
-        AssignLabelText(yMin, yMax, redwine_dt, "sulphates", yName);
-        AssignLabelText(zMin, zMax, redwine_dt, "alcohol", zName);
+        AssignLabelText(xMin[0], xMax[0], redwine_dt, "residual sugar", xName[0]);
+        AssignLabelText(xMin[1], xMax[1], redwine_dt, "residual sugar", xName[1]);
+        AssignLabelText(yMin[0], yMax[0], redwine_dt, "sulphates", yName[0]);
+        AssignLabelText(yMin[1], yMax[1], redwine_dt, "sulphates", yName[1]);
+        AssignLabelText(yMin[2], yMax[2], redwine_dt, "sulphates", yName[2]);
+        AssignLabelText(yMin[3], yMax[3], redwine_dt, "sulphates", yName[3]);
+        AssignLabelText(zMin[0], zMax[0], redwine_dt, "alcohol", zName[0]);
+        AssignLabelText(zMin[1], zMax[1], redwine_dt, "alcohol", zName[1]);
     }
-    */
+    
     
 
     public void DestroyAllPrefabs()
