@@ -11702,6 +11702,7 @@ GameObject:
   - component: {fileID: 1078658437}
   - component: {fileID: 1078658439}
   - component: {fileID: 1078658435}
+  - component: {fileID: 1078658440}
   m_Layer: 0
   m_Name: DataCanvas
   m_TagString: Untagged
@@ -11885,6 +11886,25 @@ MonoBehaviour:
   axis: {x: 0, y: -1, z: 0}
   space: 1
   sensitivity: 1
+--- !u!114 &1078658440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078658430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e37bf9d23704849b6d4bb2fae198be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selfSelected: 1
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeselected:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1081764037
 GameObject:
   m_ObjectHideFlags: 0
