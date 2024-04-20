@@ -29,7 +29,7 @@ public class TapInteractionScript : MonoBehaviour
         //HighlightObject();
     }
 
-    void TapRayCast()
+    public void TapRayCast()
     {
         if(highlightedObject!=null) highlightedObject.transform.GetChild(0).gameObject.SetActive(false);
         highlightedObject = null;
