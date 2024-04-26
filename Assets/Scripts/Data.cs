@@ -39,6 +39,7 @@ public class Data : MonoBehaviour
     [SerializeField] private TMP_Dropdown scaledropdown;
     [SerializeField] private TMP_Dropdown meshdropdown;
     [SerializeField] private GameObject[] dataHelperLabels;
+    [SerializeField] private GameObject[] dataDescriptions;
     
     [SerializeField] private TMP_Text[] xMax;
     [SerializeField] private TMP_Text[] yMax;
@@ -54,6 +55,10 @@ public class Data : MonoBehaviour
     public int runOnce = 0;
     public DataTable iris_dt;
     public DataTable redwine_dt;
+    public DataTable movies_dt;
+    public DataTable heightweight_dt;
+    public DataTable housing_dt;
+
 
     [SerializeField] private GameObject dataPointPrefab;
     // Start is called before the first frame update
@@ -63,6 +68,9 @@ public class Data : MonoBehaviour
         LoadIrisDataset();
         // Loading the red wine dataset
         LoadWineQualityDataset();
+        LoadMovieDataset();
+        LoadHousingDataset();
+        LoadHeightWeightDataset();
     }
 
     void Update()
@@ -90,7 +98,108 @@ public class Data : MonoBehaviour
         }
         */
     }
+    void LoadHeightWeightDataset()
+    {
+        using (var reader = new StreamReader(Path.Combine(Application.streamingAssetsPath, "HeightWeight.csv")))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {
+            // Do any configuration to `CsvReader` before creating CsvDataReader.
+            using (var dr = new CsvDataReader(csv))
+            {
+                heightweight_dt = new DataTable();
+                heightweight_dt.Columns.Add("Gender", typeof(string));
+                heightweight_dt.Columns.Add("Height", typeof(int));
+                heightweight_dt.Columns.Add("Weight", typeof(int));
+                heightweight_dt.Columns.Add("Index", typeof(float));
 
+                heightweight_dt.Load(dr);
+
+                NormalizeColumn(heightweight_dt, "Height");
+                NormalizeColumn(heightweight_dt, "Weight");
+                NormalizeColumn(heightweight_dt, "Index");
+            }
+        }
+ 
+        Debug.Log("HeightWeight data loaded");
+    }
+    
+    void LoadHousingDataset()
+    {
+        using (var reader = new StreamReader(Path.Combine(Application.streamingAssetsPath, "Housing.csv")))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {
+            // Do any configuration to `CsvReader` before creating CsvDataReader.
+            using (var dr = new CsvDataReader(csv))
+            {
+                housing_dt = new DataTable();
+                housing_dt.Columns.Add("id", typeof(float));
+                housing_dt.Columns.Add("date", typeof(string));
+                housing_dt.Columns.Add("price", typeof(float));
+                housing_dt.Columns.Add("bedrooms", typeof(float));
+                housing_dt.Columns.Add("bathrooms", typeof(float));
+                housing_dt.Columns.Add("sqft_living", typeof(int));
+                housing_dt.Columns.Add("sqft_lot", typeof(int));
+                housing_dt.Columns.Add("floors", typeof(float));
+                housing_dt.Columns.Add("waterfront", typeof(string));
+                housing_dt.Columns.Add("view", typeof(int));
+                housing_dt.Columns.Add("condition", typeof(int));
+                housing_dt.Columns.Add("grade", typeof(int));
+                housing_dt.Columns.Add("sqft_above", typeof(int));
+                housing_dt.Columns.Add("sqft_basement", typeof(int));
+                housing_dt.Columns.Add("yr_built", typeof(int));
+                housing_dt.Columns.Add("yr_renovated", typeof(int));
+                housing_dt.Columns.Add("zipcode", typeof(string));
+                housing_dt.Columns.Add("lat", typeof(float));
+                housing_dt.Columns.Add("long", typeof(float));
+                housing_dt.Columns.Add("sqft_living15", typeof(float));
+                housing_dt.Columns.Add("sqft_lot15", typeof(float));
+
+                housing_dt.Load(dr);
+
+                NormalizeColumn(housing_dt, "lat");
+                NormalizeColumn(housing_dt, "long");
+                NormalizeColumn(housing_dt, "price");
+                NormalizeColumn(housing_dt, "condition");
+                NormalizeColumn(housing_dt, "sqft_living");
+                NormalizeColumn(housing_dt, "grade");
+            }
+        }
+ 
+        Debug.Log("housing data loaded");
+    }
+    
+    void LoadMovieDataset()
+    {
+        using (var reader = new StreamReader(Path.Combine(Application.streamingAssetsPath, "Movies.csv")))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {
+            // Do any configuration to `CsvReader` before creating CsvDataReader.
+            using (var dr = new CsvDataReader(csv))
+            {
+                movies_dt = new DataTable();
+                movies_dt.Columns.Add("Release", typeof(string));
+                movies_dt.Columns.Add("Opening", typeof(int));
+                movies_dt.Columns.Add("Total Gross", typeof(int));
+                movies_dt.Columns.Add("% of Total", typeof(float));
+                movies_dt.Columns.Add("Theaters", typeof(int));
+                movies_dt.Columns.Add("Average", typeof(int));
+                movies_dt.Columns.Add("Date", typeof(string));
+                movies_dt.Columns.Add("Distributor", typeof(string));
+
+                movies_dt.Load(dr);
+
+                NormalizeColumn(movies_dt, "Opening");
+                NormalizeColumn(movies_dt, "Total Gross");
+                NormalizeColumn(movies_dt, "% of Total");
+                NormalizeColumn(movies_dt, "Theaters");
+                NormalizeColumn(movies_dt, "Average");
+                NormalizeColumnFromDate(movies_dt, "Date");
+            }
+        }
+ 
+        Debug.Log("movie data loaded");
+    }
+    
     void LoadIrisDataset()
     {
         using (var reader = new StreamReader(Path.Combine(Application.streamingAssetsPath, "Iris.csv")))
@@ -190,11 +299,41 @@ public class Data : MonoBehaviour
             //Debug.Log(row[newColumnName]);
         }
     }
+    
+    void NormalizeColumnFromDate(DataTable dtz, string columnName)
+    {
+        // Check if the new column already exists, if not, add it
+        string newColumnName = columnName + "_normalized";
+        if (!dtz.Columns.Contains(newColumnName))
+        {
+            dtz.Columns.Add(newColumnName, typeof(float));
+        }
+
+        DateTime minValue = DateTime.MaxValue;
+        DateTime maxValue = DateTime.MinValue;
+
+        // Find the min and max values
+        foreach (DataRow row in dtz.Rows)
+        {
+            DateTime value = DateTime.ParseExact(row[columnName].ToString(), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            if (value < minValue) minValue = value;
+            if (value > maxValue) maxValue = value;
+        }
+
+        // Normalize the column values
+        foreach (DataRow row in dtz.Rows)
+        {
+            DateTime value = DateTime.ParseExact(row[columnName].ToString(), "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            float normalizedValue = (float)(value - minValue).TotalDays / (float)(maxValue - minValue).TotalDays;
+            row[newColumnName] = normalizedValue;
+        }
+    }
 
     public void InstantiateIrisData1()
     {
         DestroyAllPrefabs();
-        EnableHelper(0);
+        EnableHelper(1);
+        EnableDescription(1);
 
         
         if (iris_dt == null) return;
@@ -222,115 +361,124 @@ public class Data : MonoBehaviour
 
             prefab.GetComponent<FixedScaleScript>().Rescale(0.02f);
         }
-        AssignLabelText(xMin[0], xMax[0], iris_dt, "PetalLengthCm", xName[0]);
-        AssignLabelText(xMin[1], xMax[1], iris_dt, "PetalLengthCm", xName[1]);
-        AssignLabelText(yMin[0], yMax[0], iris_dt, "PetalWidthCm", yName[0]);
-        AssignLabelText(yMin[1], yMax[1], iris_dt, "PetalWidthCm", yName[1]);
-        AssignLabelText(yMin[2], yMax[2], iris_dt, "PetalWidthCm", yName[2]);
-        AssignLabelText(yMin[3], yMax[3], iris_dt, "PetalWidthCm", yName[3]);
-        AssignLabelText(zMin[0], zMax[0], iris_dt, "SepalLengthCm", zName[0]);
-        AssignLabelText(zMin[1], zMax[1], iris_dt, "SepalLengthCm", zName[1]);
-    }
-    /*
-    public void InstantiateIrisData2()
-    {
-        DestroyAllPrefabs();
-        EnableHelper(0);
-
-        
-        if (iris_dt == null) return;
-        foreach (DataRow row in iris_dt.Rows)
-        {
-            GameObject prefab = Instantiate(dataPointPrefab, gameObject.transform);
-            prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["SepalWidthCm_normalized"]), Convert.ToSingle(row["SepalLengthCm_normalized"]), Convert.ToSingle(row["PetalWidthCm_normalized"]));
-            //prefab.GetComponent<Renderer>().material.color = new Color(1-Convert.ToSingle(row["quality_normalized"]),Convert.ToSingle(row["quality_normalized"]),0.0f);
-            prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Sepal Length(cm): {row["SepalLengthCm"]}\nSepal Width(cm): {row["SepalWidthCm"]}\nPetal Length(cm): {row["PetalLengthCm"]}\nPetal Width(cm): {row["PetalWidthCm"]}\nSpecies: {row["Species"]}";
-            switch (row["Species"].ToString())
-            {
-                case "Iris-versicolor":
-                    prefab.GetComponent<Renderer>().material.color = new Color(1,1,0);
-                    break;
-                case "Iris-setosa":
-                    prefab.GetComponent<Renderer>().material.color = new Color(0,1,1);
-                    break;
-                case "Iris-virginica":
-                    prefab.GetComponent<Renderer>().material.color = new Color(1,0,1);
-                    break;
-                default:
-                    prefab.GetComponent<Renderer>().material.color = new Color(1,1,1);
-                    break;
-            }
-
-            prefab.GetComponent<FixedScaleScript>().Rescale(0.02f);
-        }
-        AssignLabelText(xMin, xMax, iris_dt, "SepalWidthCm", xName);
-        AssignLabelText(yMin, yMax, iris_dt, "SepalLengthCm", yName);
-        AssignLabelText(zMin, zMax, iris_dt, "PetalWidthCm", zName);
+        AssignLabelText(xMin[0], xMax[0], iris_dt, "PetalLengthCm", xName[0], "Petal Length(cm)");
+        AssignLabelText(xMin[1], xMax[1], iris_dt, "PetalLengthCm", xName[1], "Petal Length(cm)");
+        AssignLabelText(yMin[0], yMax[0], iris_dt, "PetalWidthCm", yName[0], "Petal Width(cm)");
+        AssignLabelText(yMin[1], yMax[1], iris_dt, "PetalWidthCm", yName[1], "Petal Width(cm)");
+        AssignLabelText(yMin[2], yMax[2], iris_dt, "PetalWidthCm", yName[2], "Petal Width(cm)");
+        AssignLabelText(yMin[3], yMax[3], iris_dt, "PetalWidthCm", yName[3], "Petal Width(cm)");
+        AssignLabelText(zMin[0], zMax[0], iris_dt, "SepalLengthCm", zName[0], "Sepal Length(cm)");
+        AssignLabelText(zMin[1], zMax[1], iris_dt, "SepalLengthCm", zName[1], "Sepal Length(cm)");
     }
     
-    public void InstantiateIrisData3()
+    public void InstantiateHousingData1()
     {
         DestroyAllPrefabs();
-        EnableHelper(0);
+        EnableHelper(3);
+        EnableDescription(3);
 
-        
-        if (iris_dt == null) return;
-        foreach (DataRow row in iris_dt.Rows)
+        int maxIterations = 2500;
+        int iterations = 0;
+
+        if (housing_dt == null) return;
+        foreach (DataRow row in housing_dt.Rows)
         {
-            GameObject prefab = Instantiate(dataPointPrefab, gameObject.transform);
-            prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["SepalLengthCm_normalized"]), Convert.ToSingle(row["PetalLengthCm_normalized"]), Convert.ToSingle(row["PetalWidthCm_normalized"]));
-            //prefab.GetComponent<Renderer>().material.color = new Color(1-Convert.ToSingle(row["quality_normalized"]),Convert.ToSingle(row["quality_normalized"]),0.0f);
-            prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Sepal Length(cm): {row["SepalLengthCm"]}\nSepal Width(cm): {row["SepalWidthCm"]}\nPetal Length(cm): {row["PetalLengthCm"]}\nPetal Width(cm): {row["PetalWidthCm"]}\nSpecies: {row["Species"]}";
-            switch (row["Species"].ToString())
-            {
-                case "Iris-versicolor":
-                    prefab.GetComponent<Renderer>().material.color = new Color(1,1,0);
-                    break;
-                case "Iris-setosa":
-                    prefab.GetComponent<Renderer>().material.color = new Color(0,1,1);
-                    break;
-                case "Iris-virginica":
-                    prefab.GetComponent<Renderer>().material.color = new Color(1,0,1);
-                    break;
-                default:
-                    prefab.GetComponent<Renderer>().material.color = new Color(1,1,1);
-                    break;
-            }
+            if (iterations >= maxIterations) break;
 
-            prefab.GetComponent<FixedScaleScript>().Rescale(0.02f);
+            GameObject prefab = Instantiate(dataPointPrefab, gameObject.transform);
+            prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["sqft_living_normalized"]), Convert.ToSingle(row["price_normalized"]), Convert.ToSingle(row["grade_normalized"]));
+            prefab.GetComponent<Renderer>().material.color = new Color(1, 1 - Convert.ToSingle(row["price_normalized"]), 0.0f);
+            prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Price(USD): {row["price"]}\nCondition(1-5): {row["condition"]}\nFloors: {row["floors"]}\nLiving Area sq ft: {row["sqft_living"]}\nGrade: {row["grade"]}";
+
+            prefab.GetComponent<FixedScaleScript>().Rescale(0.01f);
+
+            iterations++;
         }
-        AssignLabelText(xMin[0], xMax[0], iris_dt, "SepalLengthCm", xName);
-        AssignLabelText(yMin[0], yMax[0], iris_dt, "PetalLengthCm", yName);
-        AssignLabelText(zMin[0], zMax[0], iris_dt, "PetalWidthCm", zName);
+
+        AssignLabelText(xMin[0], xMax[0], housing_dt, "sqft_living", xName[0], "Living Area(Square Feet)");
+        AssignLabelText(xMin[1], xMax[1], housing_dt, "sqft_living", xName[1], "Living Area(Square Feet)");
+        AssignLabelText(yMin[0], yMax[0], housing_dt, "price", yName[0], "Price(USD)");
+        AssignLabelText(yMin[1], yMax[1], housing_dt, "price", yName[1], "Price(USD)");
+        AssignLabelText(yMin[2], yMax[2], housing_dt, "price", yName[2], "Price(USD)");
+        AssignLabelText(yMin[3], yMax[3], housing_dt, "price", yName[3], "Price(USD)");
+        AssignLabelText(zMin[0], zMax[0], housing_dt, "grade", zName[0], "Grade(1-13)");
+        AssignLabelText(zMin[1], zMax[1], housing_dt, "grade", zName[1], "Grade(1-13)");
     }
-    */
-    public void InstantiateWineData1()
+    
+    public void InstantiateMovieData1()
     {
         DestroyAllPrefabs();
         EnableHelper(2);
-        if (redwine_dt == null) return;
-        foreach (DataRow row in redwine_dt.Rows)
+        EnableDescription(2);
+
+        
+        if (movies_dt == null) return;
+        foreach (DataRow row in movies_dt.Rows)
         {
             GameObject prefab = Instantiate(dataPointPrefab, gameObject.transform);
-            prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["pH_normalized"]), Convert.ToSingle(row["quality_normalized"]), Convert.ToSingle(row["sulphates_normalized"]));
-            prefab.GetComponent<Renderer>().material.color = new Color(1.0f,0.1f,0.5f);
-            prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Residual Sugar: {row["residual sugar"]}\nSulphates: {row["sulphates"]}\nPH: {row["pH"]}\nDensity: {row["density"]}\nAlcohol: {row["alcohol"]}\nQuality: {row["quality"]}";
-            prefab.GetComponent<FixedScaleScript>().Rescale(0.01f);
+            prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["Date_normalized"]), Convert.ToSingle(row["Total Gross_normalized"]), Convert.ToSingle(row["Opening_normalized"]));
+            prefab.GetComponent<Renderer>().material.color = new Color(1,1-Convert.ToSingle(row["Total Gross_normalized"]),1-Convert.ToSingle(row["Total Gross_normalized"]));
+            prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Movie Title: {row["Release"]}\nOpening Gross: {row["Opening"]}\nTotal Gross: {row["Total Gross"]}\nDate: {row["Date"]}\nDistributor: {row["Distributor"]}";
+
+            prefab.GetComponent<FixedScaleScript>().Rescale(0.02f);
         }
-        AssignLabelText(xMin[0], xMax[0], redwine_dt, "pH", xName[0]);
-        AssignLabelText(xMin[1], xMax[1], redwine_dt, "pH", xName[1]);
-        AssignLabelText(yMin[0], yMax[0], redwine_dt, "quality", yName[0]);
-        AssignLabelText(yMin[1], yMax[1], redwine_dt, "quality", yName[1]);
-        AssignLabelText(yMin[2], yMax[2], redwine_dt, "quality", yName[2]);
-        AssignLabelText(yMin[3], yMax[3], redwine_dt, "quality", yName[3]);
-        AssignLabelText(zMin[0], zMax[0], redwine_dt, "sulphates", zName[0]);
-        AssignLabelText(zMin[1], zMax[1], redwine_dt, "sulphates", zName[1]);
+        AssignLabelText(xMin[0], xMax[0], movies_dt, "Date_normalized", xName[0],"1983", "2024", "Release Date");
+        AssignLabelText(xMin[1], xMax[1], movies_dt, "Date_normalized", xName[1],"1983", "2024", "Release Date");
+        AssignLabelText(yMin[0], yMax[0], movies_dt, "Total Gross", yName[0], "Total Gross(USD)");
+        AssignLabelText(yMin[1], yMax[1], movies_dt, "Total Gross", yName[1], "Total Gross(USD)");
+        AssignLabelText(yMin[2], yMax[2], movies_dt, "Total Gross", yName[2], "Total Gross(USD)");
+        AssignLabelText(yMin[3], yMax[3], movies_dt, "Total Gross", yName[3], "Total Gross(USD)");
+        AssignLabelText(zMin[0], zMax[0], movies_dt, "Opening", zName[0], "Opening Earnings(USD)");
+        AssignLabelText(zMin[1], zMax[1], movies_dt, "Opening", zName[1], "Opening Earnings(USD)");
+    }
+    
+    public void InstantiateHeightWeightData1()
+    {
+        DestroyAllPrefabs();
+        EnableHelper(4);
+        EnableDescription(4);
+        if (heightweight_dt == null) return;
+        foreach (DataRow row in heightweight_dt.Rows)
+        {
+            GameObject prefab = Instantiate(dataPointPrefab, gameObject.transform);
+            prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["Index_normalized"]), Convert.ToSingle(row["Height_normalized"]), Convert.ToSingle(row["Weight_normalized"]));
+            //prefab.transform.localPosition = new Vector3(0.5f, Convert.ToSingle(row["Height_normalized"]), Convert.ToSingle(row["Weight_normalized"]));
+            //prefab.GetComponent<Renderer>().material.color = new Color(1.0f,0.1f,0.5f);
+            prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Gender: {row["Gender"]}\nHeight: {row["Height"]}\nWeight: {row["Weight"]}\nBMI Categorization(1-5): {row["Index"]}";
+            prefab.GetComponent<FixedScaleScript>().Rescale(0.02f);
+            
+            switch (row["Gender"].ToString())
+            {
+                case "Male":
+                    prefab.GetComponent<Renderer>().material.color = new Color(0.1f,0.3f,0.8f);
+                    break;
+                case "Female":
+                    prefab.GetComponent<Renderer>().material.color = new Color(1,0.1f,0.3f);
+                    break;
+                default:
+                    prefab.GetComponent<Renderer>().material.color = new Color(1,1,1);
+                    break;
+            }
+        }
+        
+        
+        AssignLabelText(xMin[0], xMax[0], heightweight_dt, "Index", xName[0],"0\nUnderweight", "5\nExtremely Obese", "BMI Class");
+        AssignLabelText(xMin[1], xMax[1], heightweight_dt, "Index", xName[1],"0\nUnderweight", "5\nExtremely Obese", "BMI Class");
+        //AssignLabelText(xMin[0], xMax[0], heightweight_dt, "Index", xName[0],"", "", "N/A");
+        //AssignLabelText(xMin[1], xMax[1], heightweight_dt, "Index", xName[1],"", "", "N/A");
+        AssignLabelText(yMin[0], yMax[0], heightweight_dt, "Height", yName[0], "Height(cm)");
+        AssignLabelText(yMin[1], yMax[1], heightweight_dt, "Height", yName[1], "Height(cm)");
+        AssignLabelText(yMin[2], yMax[2], heightweight_dt, "Height", yName[2], "Height(cm)");
+        AssignLabelText(yMin[3], yMax[3], heightweight_dt, "Height", yName[3], "Height(cm)");
+        AssignLabelText(zMin[0], zMax[0], heightweight_dt, "Weight", zName[0], "Weight(Kg)");
+        AssignLabelText(zMin[1], zMax[1], heightweight_dt, "Weight", zName[1], "Weight(Kg)");
     }
     
     public void InstantiateWineData2()
     {
         DestroyAllPrefabs();
-        EnableHelper(1);
+        EnableHelper(5);
+        EnableDescription(5);
         if (redwine_dt == null) return;
         foreach (DataRow row in redwine_dt.Rows)
         {
@@ -414,8 +562,16 @@ public class Data : MonoBehaviour
         }
         dataHelperLabels[index].SetActive(true);
     }
+    private void EnableDescription(int index)
+    {
+        foreach (GameObject label in dataDescriptions)
+        {
+            label.SetActive(false);
+        }
+        dataDescriptions[index].SetActive(true);
+    }
 
-    private void AssignLabelText(TMP_Text minLabel, TMP_Text maxLabel,DataTable dataTable, string columnName, TMP_Text nameLabel)
+    private void AssignLabelText(TMP_Text minLabel, TMP_Text maxLabel,DataTable dataTable, string columnName, TMP_Text nameLabel, string nameOverride = null)
     {
         float minValue = float.MaxValue;
         float maxValue = float.MinValue;
@@ -427,8 +583,15 @@ public class Data : MonoBehaviour
             if (value > maxValue) maxValue = value;
         }
 
-        minLabel.text = minValue+"";
-        maxLabel.text = maxValue+"";
-        nameLabel.text = columnName;
+        minLabel.text = minValue.ToString("#,##0.00");
+        maxLabel.text = maxValue.ToString("#,##0.00");
+        nameLabel.text = nameOverride ?? columnName;
+    }
+    
+    private void AssignLabelText(TMP_Text minLabel, TMP_Text maxLabel,DataTable dataTable, string columnName, TMP_Text nameLabel, string minOverride, string maxOverride, string nameOverride = null)
+    {
+        minLabel.text = minOverride;
+        maxLabel.text = maxOverride;
+        nameLabel.text = nameOverride ?? columnName;
     }
 }
