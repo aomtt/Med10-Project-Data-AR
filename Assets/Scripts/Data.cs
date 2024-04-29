@@ -390,7 +390,7 @@ public class Data : MonoBehaviour
             prefab.GetComponent<Renderer>().material.color = new Color(1, 1 - Convert.ToSingle(row["price_normalized"]), 0.0f);
             prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Price(USD): {row["price"]}\nCondition(1-5): {row["condition"]}\nFloors: {row["floors"]}\nLiving Area sq ft: {row["sqft_living"]}\nGrade: {row["grade"]}";
 
-            prefab.GetComponent<FixedScaleScript>().Rescale(0.01f);
+            prefab.GetComponent<FixedScaleScript>().Rescale(0.02f);
 
             iterations++;
         }
@@ -401,8 +401,8 @@ public class Data : MonoBehaviour
         AssignLabelText(yMin[1], yMax[1], housing_dt, "price", yName[1], "Price(USD)");
         AssignLabelText(yMin[2], yMax[2], housing_dt, "price", yName[2], "Price(USD)");
         AssignLabelText(yMin[3], yMax[3], housing_dt, "price", yName[3], "Price(USD)");
-        AssignLabelText(zMin[0], zMax[0], housing_dt, "grade", zName[0], "Grade(1-13)");
-        AssignLabelText(zMin[1], zMax[1], housing_dt, "grade", zName[1], "Grade(1-13)");
+        AssignLabelText(zMin[0], zMax[0], housing_dt, "grade", zName[0], "Grade");
+        AssignLabelText(zMin[1], zMax[1], housing_dt, "grade", zName[1], "Grade");
     }
     
     public void InstantiateMovieData1()
@@ -462,8 +462,8 @@ public class Data : MonoBehaviour
         }
         
         
-        AssignLabelText(xMin[0], xMax[0], heightweight_dt, "Index", xName[0],"0\nUnderweight", "5\nExtremely Obese", "BMI Class");
-        AssignLabelText(xMin[1], xMax[1], heightweight_dt, "Index", xName[1],"0\nUnderweight", "5\nExtremely Obese", "BMI Class");
+        AssignLabelText(xMin[0], xMax[0], heightweight_dt, "Index", xName[0],"0\nUnderweight", "5\nExtremely Obese", "BMI Category");
+        AssignLabelText(xMin[1], xMax[1], heightweight_dt, "Index", xName[1],"0\nUnderweight", "5\nExtremely Obese", "BMI Category");
         //AssignLabelText(xMin[0], xMax[0], heightweight_dt, "Index", xName[0],"", "", "N/A");
         //AssignLabelText(xMin[1], xMax[1], heightweight_dt, "Index", xName[1],"", "", "N/A");
         AssignLabelText(yMin[0], yMax[0], heightweight_dt, "Height", yName[0], "Height(cm)");
@@ -486,7 +486,7 @@ public class Data : MonoBehaviour
             prefab.transform.localPosition = new Vector3(Convert.ToSingle(row["residual sugar_normalized"]), Convert.ToSingle(row["sulphates_normalized"]), Convert.ToSingle(row["alcohol_normalized"]));
             prefab.GetComponent<Renderer>().material.color = new Color(1-Convert.ToSingle(row["quality_normalized"]),Convert.ToSingle(row["quality_normalized"]),0.0f);
             prefab.GetComponent<DataPointScript>().dataDescriptionText = $"Residual Sugar: {row["residual sugar"]}\nSulphates: {row["sulphates"]}\nPH: {row["pH"]}\nDensity: {row["density"]}\nAlcohol: {row["alcohol"]}\nQuality: {row["quality"]}";
-            prefab.GetComponent<FixedScaleScript>().Rescale(0.01f);
+            prefab.GetComponent<FixedScaleScript>().Rescale(0.02f);
         }
         AssignLabelText(xMin[0], xMax[0], redwine_dt, "residual sugar", xName[0]);
         AssignLabelText(xMin[1], xMax[1], redwine_dt, "residual sugar", xName[1]);
