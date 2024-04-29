@@ -19,7 +19,9 @@ public class LSL_Marker_Unity : MonoBehaviour
         // create stream info and outlet
         inf = new StreamInfo("Test2", "Markers", 1, 0, channel_format_t.cf_string, "giu4569");
         outl = new StreamOutlet(inf);
+        Debug.Log(outl.IsClosed);
     }
+    /*
     
 
     void Update()
@@ -36,9 +38,12 @@ public class LSL_Marker_Unity : MonoBehaviour
         }
     }
 
+    */
+    
     public void SendEventMarker(string eventName)  {
         string[] eventArray = new string[] { eventName };
         outl.push_sample(eventArray);
+        Debug.Log("event logged: "+eventName);
     }
 
     void OnApplicationQuit()
