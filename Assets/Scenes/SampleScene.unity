@@ -4470,9 +4470,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1121459673}
-        m_TargetAssemblyTypeName: LSL_Marker_Unity, Assembly-CSharp
-        m_MethodName: SendEventMarker
+      - m_Target: {fileID: 723309893}
+        m_TargetAssemblyTypeName: Ping, Assembly-CSharp
+        m_MethodName: SendAMessage
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5531,9 +5531,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1121459673}
-        m_TargetAssemblyTypeName: LSL_Marker_Unity, Assembly-CSharp
-        m_MethodName: SendEventMarker
+      - m_Target: {fileID: 723309893}
+        m_TargetAssemblyTypeName: Ping, Assembly-CSharp
+        m_MethodName: SendAMessage
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10036,9 +10036,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1121459673}
-        m_TargetAssemblyTypeName: LSL_Marker_Unity, Assembly-CSharp
-        m_MethodName: SendEventMarker
+      - m_Target: {fileID: 723309893}
+        m_TargetAssemblyTypeName: Ping, Assembly-CSharp
+        m_MethodName: SendAMessage
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11073,6 +11073,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4296387290211419354}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &723309892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 723309894}
+  - component: {fileID: 723309893}
+  m_Layer: 0
+  m_Name: MessageSender
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &723309893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723309892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89076445bda543739a86b26ad69006c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x: 0
+--- !u!4 &723309894
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723309892}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.9094008, y: 0.96332, z: -0.0884783}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &731569089
 GameObject:
   m_ObjectHideFlags: 0
@@ -15275,7 +15320,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078658430}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4eda371e5375f454490a86f21559ee38, type: 3}
   m_Name: 
@@ -15298,7 +15343,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078658430}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c73c1ab94e28d244827af556dca1ed2, type: 3}
   m_Name: 
@@ -15321,7 +15366,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078658430}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc7c91b26689a054d88448aba6dfe424, type: 3}
   m_Name: 
@@ -15863,51 +15908,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1114040580}
   m_CullTransparentMesh: 1
---- !u!1 &1121459672
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1121459674}
-  - component: {fileID: 1121459673}
-  m_Layer: 0
-  m_Name: LSLObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1121459673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1121459672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea96ca1c97a3e51418c280f23727baad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  k: 0
---- !u!4 &1121459674
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1121459672}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.9094008, y: 0.96332, z: -0.0884783}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1125158403
 GameObject:
   m_ObjectHideFlags: 0
@@ -19825,9 +19825,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1121459673}
-        m_TargetAssemblyTypeName: LSL_Marker_Unity, Assembly-CSharp
-        m_MethodName: SendEventMarker
+      - m_Target: {fileID: 723309893}
+        m_TargetAssemblyTypeName: Ping, Assembly-CSharp
+        m_MethodName: SendAMessage
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19970,9 +19970,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1121459673}
-        m_TargetAssemblyTypeName: LSL_Marker_Unity, Assembly-CSharp
-        m_MethodName: SendEventMarker
+      - m_Target: {fileID: 723309893}
+        m_TargetAssemblyTypeName: Ping, Assembly-CSharp
+        m_MethodName: SendAMessage
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21999,9 +21999,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1121459673}
-        m_TargetAssemblyTypeName: LSL_Marker_Unity, Assembly-CSharp
-        m_MethodName: SendEventMarker
+      - m_Target: {fileID: 723309893}
+        m_TargetAssemblyTypeName: Ping, Assembly-CSharp
+        m_MethodName: SendAMessage
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -34869,4 +34869,4 @@ SceneRoots:
   - {fileID: 1538572539}
   - {fileID: 2006413945}
   - {fileID: 587127307}
-  - {fileID: 1121459674}
+  - {fileID: 723309894}
