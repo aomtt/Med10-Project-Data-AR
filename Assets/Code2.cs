@@ -7,9 +7,7 @@ using LSL;
 
 public class Ping : MonoBehaviour
 {
-    public int x = 0;
-    StreamInfo inf;
-    StreamOutlet outl;
+
 
     System.Guid guid = System.Guid.NewGuid();
     // URL to Firebase database
@@ -23,13 +21,12 @@ public class Ping : MonoBehaviour
         Debug.Log("Unity Firebase REST API Test");
     }
 
-    // Method to send data to Firebase using UnityWebRequest
-
-
     public void SendAMessage(string info)
     {
         SendData("messages", info);
     }
+
+    // Method to send data to Firebase using UnityWebRequest
     public void SendData(string key, string data)
     {
         string json = $"{{\"{key}\":\"{data}\"}}";
@@ -55,23 +52,6 @@ public class Ping : MonoBehaviour
             Debug.Log("Data sent successfully! Status Code: " + request.responseCode);
         }
     }
-
-    void Update()
-    {
-        x += 1;
-        if (Input.GetKeyDown(KeyCode.Space)) // Example trigger
-        {
-            SendData("message", "Hello from Unity!");
-        }
-    }
-
-    void OnApplicationQuit()
-    {
-        Debug.Log("Closing outlet stream....");
-        outl.Close();
-        if(outl.IsClosed == true) {
-            Debug.Log("Successfully Closed!");
-        }
-        Debug.Log("Application ending after " + Time.time + " seconds");
-    }
+    
 }
+
